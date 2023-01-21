@@ -11,9 +11,6 @@ public class LoginCourierTest {
 
     private Courier courier;
     private CourierClient courierClient;
-
-    private CourierCradentials courierCradentials;
-
     private CourierCradentials courierCredentialsWithoutPassword;
     private CourierCradentials courierCredentialsWithoutLogin;
 
@@ -25,7 +22,6 @@ public class LoginCourierTest {
     public void setUp() {
         courier = CourierGenerator.getDefaultCourier();
         courierClient = new CourierClient();
-        courierCradentials = new CourierCradentials(courier.getLogin(), courier.getPassword());
         courierCredentialsWithoutPassword = new CourierCradentials(courier.getLogin(), "");
         courierCredentialsWithoutLogin = new CourierCradentials("", courier.getPassword());
         invalidCourierCredentials = InvalidCourierGenerator.getInvalidCourier();
@@ -33,6 +29,7 @@ public class LoginCourierTest {
 
     @After
     public void cleanUp(){
+        if (id > 0)
         courierClient.delete(id);
     }
 

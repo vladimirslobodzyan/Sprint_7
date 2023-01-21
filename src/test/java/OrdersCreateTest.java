@@ -55,6 +55,7 @@ public class OrdersCreateTest {
 
     @After
     public void cleanUp(){
+        if (track > 0)
         orderClient.cancel(track);
     }
 

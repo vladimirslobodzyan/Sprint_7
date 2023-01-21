@@ -30,15 +30,14 @@ public class CreateCourierTest {
 
     @After
     public void cleanUp(){
-       courierClient.delete(id);
+        if (id > 0)
+        courierClient.delete(id);
     }
 
     @Test
     @DisplayName("Courier Can Be Created")
     public void courierCanBeCreated(){
         ValidatableResponse response = courierClient.create(courier);
-        ValidatableResponse loginResponse = courierClient.login(CourierCradentials.from(courier));
-        id = loginResponse.extract().path("id");
         int statusCode = response.extract().statusCode();
         assertEquals(SC_CREATED, statusCode);
     }
@@ -47,8 +46,6 @@ public class CreateCourierTest {
     @DisplayName("Courier Created Message")
     public void courierCreatedMessage(){
         ValidatableResponse response = courierClient.create(courier);
-        ValidatableResponse loginResponse = courierClient.login(CourierCradentials.from(courier));
-        id = loginResponse.extract().path("id");
         boolean messageResponse = response.extract().path("ok");
         assertTrue(messageResponse);
     }
@@ -58,8 +55,6 @@ public class CreateCourierTest {
     public void sameCourierCreated(){
         courierClient.create(courier);
         ValidatableResponse response = courierClient.create(sameCourier);
-        ValidatableResponse loginResponse = courierClient.login(CourierCradentials.from(courier));
-        id = loginResponse.extract().path("id");
         int statusCode = response.extract().statusCode();
         assertEquals(SC_CONFLICT, statusCode);
     }
@@ -69,8 +64,6 @@ public class CreateCourierTest {
     public void sameCourierCreatedMessage(){
         courierClient.create(courier);
         ValidatableResponse response = courierClient.create(sameCourier);
-        ValidatableResponse loginResponse = courierClient.login(CourierCradentials.from(courier));
-        id = loginResponse.extract().path("id");
         String messageResponse = response.extract().path("message");
         assertEquals("Этот логин уже используется. Попробуйте другой.", messageResponse);
     }
